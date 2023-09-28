@@ -6,8 +6,8 @@ class User(BaseModel):
     name: str
     phone_number: int
     my_products: List[Product]
-    my_sales: List[Sale]
-    my_orders: List[Order] 
+    my_sales: List[Order]
+    my_purchases: List[Order] 
 
 class Product(BaseModel):
     _id: Optional[int] = None
