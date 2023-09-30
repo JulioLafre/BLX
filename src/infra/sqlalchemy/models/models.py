@@ -1,27 +1,21 @@
-from pydantic import BaseModel
-from typing import Optional, List
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+from src.infra.sqlalchemy.config.database import Base
 
-class User(BaseModel):
-    _id: Optional[int] = None
-    name: str
-    phone_number: int
-    my_products: List[Product]
-    my_sales: List[Order]
-    my_purchases: List[Order] 
+class Product(Base):
 
-class Product(BaseModel):
-    _id: Optional[int] = None
-    user: User
-    name: str
-    details: str
-    price: float
-    available: bool = False 
+    __tablename__ = "Products"
+    
+    _id = Column(Integer, primary_key=True, index=True, nullable=False)
+    name = Column(String, nullable=False)
+    user = Column(Integer, ForeignKey("users._id", ondelete="CASCADE"),nullable=False)
+    details = Column(String, nullable=True)
+    price = Column(Float, nullable=False)
+    available = Column(Boolean, server_default=False)
 
-class Order(BaseModel):
-    _id: Optional[int] = None
-    user: User
-    product: Product
-    amount: int
-    delivered: bool = False
-    local: str
-    obs: Optional[str] = "no comments"
+class User(Base):
+
+    __tablename__ = "users"
+
+    _id = Column(Integer, primary_key=True, index=True, nullable=False)
+    name = Column(String, nullable=False)
+    phone_number = Column(Integer, nullable=True)
