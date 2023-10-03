@@ -4,18 +4,17 @@ from typing import Optional, List
 class User(BaseModel):
     _id: Optional[int] = None
     name: str
-    phone_number: int
+    phone_number: str
     my_products: List['Product'] = []
     my_sales: List['Order'] = []
     my_purchases: List['Order'] = []
 
 class Product(BaseModel):
     _id: Optional[int] = None
-    user: User
     name: str
     details: str
     price: float
-    available: bool = False 
+    available: bool = True 
 
 class Order(BaseModel):
     _id: Optional[int] = None
