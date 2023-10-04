@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from sqlalchemy.orm import Session
-from src.schemas.schemas import Product, User
+from typing import List
+from src.schemas.schemas import Product,User,SimpeProduct,SimpleUser
 from src.infra.sqlalchemy.config.database import create_db, get_db
 from src.infra.sqlalchemy.repositories.products import ProductRepository
 from src.infra.sqlalchemy.repositories.users import UserRepository
@@ -9,22 +10,22 @@ create_db()
 
 app = FastAPI()
 
-@app.post("/profile")
+@app.post("/profile", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
 def create_user(user: User, db: Session = Depends(get_db)):
     user_create = UserRepository(db).create(user)
     return {"Msg": f"Your user {user_create.name} has been created!"}
 
-@app.get("/users")
+@app.get("/users", status_code=status.HTTP_200_OK, response_model=List[User])
 def users_list(db: Session = Depends(get_db)):
     users = UserRepository(db).list()
     return users
 
-@app.post("/products")
+@app.post("/products", status_code=status.HTTP_201_CREATED, response_model=SimpeProduct)
 def create_product(product: Product, db: Session = Depends(get_db)):
     product_created = ProductRepository(db).create(product)
-    return {"Msg": f"Your product {product_created.name} has been created!"}
+    return product_created
 
-@app.get("/products")
+@app.get("/products", status_code=status.HTTP_200_OK, response_model=List[Product])
 def products_list(db: Session = Depends(get_db)):
     products = ProductRepository(db).list()
     return products

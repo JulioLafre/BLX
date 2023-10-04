@@ -9,12 +9,31 @@ class User(BaseModel):
     my_sales: List['Order'] = []
     my_purchases: List['Order'] = []
 
+    class Config:
+        orm_mode = True
+
+class SimpleUser(BaseModel):
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class SimpeProduct(BaseModel):
+    name: str
+    price: float
+
+    class Config:
+        orm_mode = True
+
 class Product(BaseModel):
     _id: Optional[int] = None
     name: str
     details: str
     price: float
     available: bool = True 
+
+    class Config:
+        orm_mode = True
 
 class Order(BaseModel):
     _id: Optional[int] = None
