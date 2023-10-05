@@ -13,7 +13,7 @@ app = FastAPI()
 @app.post("/profile", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
 def create_user(user: User, db: Session = Depends(get_db)):
     user_create = UserRepository(db).create(user)
-    return {"Msg": f"Your user {user_create.name} has been created!"}
+    return user_create
 
 @app.get("/users", status_code=status.HTTP_200_OK, response_model=List[User])
 def users_list(db: Session = Depends(get_db)):

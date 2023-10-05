@@ -2,9 +2,10 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 class User(BaseModel):
-    _id: Optional[int] = None
+    user_id: Optional[int] = None
     name: str
     phone_number: str
+    password: str
     my_products: List['Product'] = []
     my_sales: List['Order'] = []
     my_purchases: List['Order'] = []
@@ -13,7 +14,9 @@ class User(BaseModel):
         orm_mode = True
 
 class SimpleUser(BaseModel):
+    user_id: Optional[int] = None
     name: str
+    phone_number: str
 
     class Config:
         orm_mode = True
@@ -26,7 +29,7 @@ class SimpeProduct(BaseModel):
         orm_mode = True
 
 class Product(BaseModel):
-    _id: Optional[int] = None
+    product_id: Optional[int] = None
     name: str
     details: str
     price: float
@@ -36,7 +39,7 @@ class Product(BaseModel):
         orm_mode = True
 
 class Order(BaseModel):
-    _id: Optional[int] = None
+    order_id: Optional[int] = None
     user: User
     product: Product
     amount: int

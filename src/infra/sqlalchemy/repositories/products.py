@@ -4,8 +4,8 @@ from src.infra.sqlalchemy.models import models
 
 class ProductRepository():
 
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self, session: Session):
+        self.session = session
 
     def create(self, product: schemas.Product):
         db_product = models.Product(
@@ -14,13 +14,13 @@ class ProductRepository():
             price = product.price,
             available = product.available
               )
-        self.db.add(db_product)
-        self.db.commit()
-        self.db.refresh(db_product)
+        self.session.add(db_product)
+        self.session.commit()
+        self.session.refresh(db_product)
         return db_product
 
     def list(self):
-        products = self.db.query(models.Product).all()
+        products = self.session.query(models.Product).all()
         return products
 
     def get_product(self):
