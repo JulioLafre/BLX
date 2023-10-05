@@ -33,7 +33,9 @@ class Product(BaseModel):
     name: str
     details: str
     price: float
-    available: bool = True 
+    available: bool = True
+    user_id: int
+    user: Optional[User] = None
 
     class Config:
         orm_mode = True

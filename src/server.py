@@ -10,22 +10,30 @@ create_db()
 
 app = FastAPI()
 
-@app.post("/profile", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
+
+#Users Rotes
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
 def create_user(user: User, db: Session = Depends(get_db)):
     user_create = UserRepository(db).create(user)
     return user_create
 
-@app.get("/users", status_code=status.HTTP_200_OK, response_model=List[User])
+@app.get("/users", response_model=List[User])
 def users_list(db: Session = Depends(get_db)):
     users = UserRepository(db).list()
     return users
+
+#Products Rotes
+@app.put("/products")
+def update_product(product: Product, db: Session = Depends(get_db)):
+    product_updatated = ProductRepository(db).edit_product(product)
+    return product_updatated
 
 @app.post("/products", status_code=status.HTTP_201_CREATED, response_model=SimpeProduct)
 def create_product(product: Product, db: Session = Depends(get_db)):
     product_created = ProductRepository(db).create(product)
     return product_created
 
-@app.get("/products", status_code=status.HTTP_200_OK, response_model=List[Product])
+@app.get("/products", response_model=List[Product])
 def products_list(db: Session = Depends(get_db)):
     products = ProductRepository(db).list()
     return products
