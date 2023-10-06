@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import update, delete
+from sqlalchemy import update, delete, select
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 
@@ -28,23 +28,25 @@ class ProductRepository():
         return products
 
 
-    def edit_product(self, product: schemas.Product):
+    def edit_product(self, id: int, product: schemas.UpdateProduct):
         update_stmt = update(models.Product)\
-        .where(models.Product.product_id == product.product_id)\
+        .where(models.Product.product_id == id)\
         .values(
             name = product.name,
             details = product.details,
             price = product.price,
             available = product.available,
-            user_id = product.user_id
             )
 
         self.session.execute(update_stmt)
         self.session.commit()
+        return self.get_product_by_id(id)
 
 
-    def get_product(self):
-        pass
+    def get_product_by_id(self, id: int):
+        query = select(models.Product).where(models.Product.product_id == id)
+        product = self.session.execute(query).first()
+        return product[0]
 
 
     def delete_product(self, id: int):

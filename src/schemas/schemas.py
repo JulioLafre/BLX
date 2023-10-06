@@ -21,9 +21,33 @@ class SimpleUser(BaseModel):
     class Config:
         orm_mode = True
 
-class SimpeProduct(BaseModel):
+
+class SimpleProduct(BaseModel):
     name: str
+    details: str
     price: float
+    available: bool
+
+    class Config:
+        orm_mode = True
+
+
+class GetProduct(BaseModel):
+    product_id: Optional[int] = None
+    name: str
+    details: str
+    price: float
+    available: bool = True
+    user: Optional[User] = None
+
+    class Config:
+        orm_mode = True
+
+class UpdateProduct(BaseModel):
+    name: str
+    details: str
+    price: float
+    available: bool = True
 
     class Config:
         orm_mode = True
