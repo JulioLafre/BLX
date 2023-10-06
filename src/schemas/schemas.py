@@ -6,9 +6,7 @@ class User(BaseModel):
     name: str
     phone_number: str
     password: str
-    my_products: List['Product'] = []
-    my_sales: List['Order'] = []
-    my_purchases: List['Order'] = []
+    products: List['SimpleProduct'] = []
 
     class Config:
         orm_mode = True
@@ -21,7 +19,6 @@ class SimpleUser(BaseModel):
     class Config:
         orm_mode = True
 
-
 class SimpleProduct(BaseModel):
     name: str
     details: str
@@ -31,14 +28,13 @@ class SimpleProduct(BaseModel):
     class Config:
         orm_mode = True
 
-
 class GetProduct(BaseModel):
     product_id: Optional[int] = None
     name: str
     details: str
     price: float
     available: bool = True
-    user: Optional[User] = None
+    user: Optional[SimpleUser] = None
 
     class Config:
         orm_mode = True
@@ -49,9 +45,6 @@ class UpdateProduct(BaseModel):
     price: float
     available: bool = True
 
-    class Config:
-        orm_mode = True
-
 class Product(BaseModel):
     product_id: Optional[int] = None
     name: str
@@ -59,7 +52,7 @@ class Product(BaseModel):
     price: float
     available: bool = True
     user_id: int
-    user: Optional[User] = None
+    user: Optional[SimpleUser] = None
 
     class Config:
         orm_mode = True

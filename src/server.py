@@ -18,6 +18,7 @@ def create_user(user: User, db: Session = Depends(get_db)):
     user_create = UserRepository(db).create(user)
     return user_create
 
+
 @app.get("/users", response_model=List[User])
 def users_list(db: Session = Depends(get_db)):
     users = UserRepository(db).list()
@@ -28,6 +29,7 @@ def users_list(db: Session = Depends(get_db)):
 def remove_product(id: int, db: Session = Depends(get_db)):
     product_removed = ProductRepository(db).delete_product(id)
     return product_removed
+
 
 @app.put("/products/{id}", response_model=GetProduct)
 def update_product(id: int, product: UpdateProduct, db: Session = Depends(get_db)):
@@ -45,6 +47,7 @@ def create_product(product: Product, db: Session = Depends(get_db)):
 def products_list(db: Session = Depends(get_db)):
     products = ProductRepository(db).list()
     return products
+
 
 @app.get("/products/{id}")
 def get_product(id: int, db: Session = Depends(get_db)):
