@@ -23,15 +23,22 @@ def users_list(db: Session = Depends(get_db)):
     return users
 
 #Products Rotes
+@app.delete("/products/{id}")
+def remove_product(id: int, db: Session = Depends(get_db)):
+    product_removed = ProductRepository(db).delete_product(id)
+    return product_removed
+
 @app.put("/products")
 def update_product(product: Product, db: Session = Depends(get_db)):
     product_updatated = ProductRepository(db).edit_product(product)
     return product_updatated
 
+
 @app.post("/products", status_code=status.HTTP_201_CREATED, response_model=SimpeProduct)
 def create_product(product: Product, db: Session = Depends(get_db)):
     product_created = ProductRepository(db).create(product)
     return product_created
+
 
 @app.get("/products", response_model=List[Product])
 def products_list(db: Session = Depends(get_db)):
