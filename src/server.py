@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, status
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from src.schemas.schemas import Product,User,SimpleProduct,SimpleUser,UpdateProduct,\
 GetProduct
@@ -11,10 +12,22 @@ create_db()
 
 app = FastAPI()
 
+#Cors
+origins = [
+    "http://localhost:8000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credential= True,
+     allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 #Users Rotes
-@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
-def create_user(user: User, db: Session = Depends(get_db)):
+@app.post("/signup", status_code=status.HTTP_201_CREATED, response_model=SimpleUser)
+def signup(user: User, db: Session = Depends(get_db)):
     user_create = UserRepository(db).create(user)
     return user_create
 
