@@ -24,21 +24,22 @@ class User(Base):
     phone_number = Column(String)
     password = Column(String)
     products = Relationship("Product", back_populates="user")
+    orders = Relationship("Order", back_populates="user")
 
 class Order(Base):
 
     __tablename__ = "orders"
 
     order_id = Column(Integer, primary_key=True, index=True, nullable=False)
-    quantity = Column(Integer),
-    delivery_adress = Column(str),
-    delivery_type = Column(str),
-    note = Column(str),
+    quantity = Column(Integer)
+    delivery_adress = Column(String)
+    delivery_type = Column(String)
+    note = Column(String)
     user_id = Column(Integer,ForeignKey(
-        "users.user_id", name="fk_user_order")),
+        "users.user_id", name="fk_user_order"))
     product_id = Column(Integer,ForeignKey(
-        "product.product_id", name="fk_product_order"))
+        "products.product_id", name="fk_product_order"))
     user = Relationship("User", back_populates="orders")
-    products = Relationship("Product", back_populates="orders")
+    products = Relationship("Product")
     
 

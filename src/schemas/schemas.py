@@ -1,6 +1,15 @@
 from pydantic import BaseModel
 from typing import Optional, List
 
+class SimpleProduct(BaseModel):
+    name: str
+    details: str
+    price: float
+    available: bool
+
+    class Config:
+        orm_mode = True
+
 class User(BaseModel):
     user_id: Optional[int] = None
     name: str
@@ -19,14 +28,6 @@ class SimpleUser(BaseModel):
     class Config:
         orm_mode = True
 
-class SimpleProduct(BaseModel):
-    name: str
-    details: str
-    price: float
-    available: bool
-
-    class Config:
-        orm_mode = True
 
 class GetProduct(BaseModel):
     product_id: Optional[int] = None
@@ -34,10 +35,11 @@ class GetProduct(BaseModel):
     details: str
     price: float
     available: bool = True
-    user: Optional[SimpleUser] = None
+    user: Optional['SimpleUser'] = None
 
     class Config:
         orm_mode = True
+
 
 class UpdateProduct(BaseModel):
     name: str
@@ -52,16 +54,20 @@ class Product(BaseModel):
     price: float
     available: bool = True
     user_id: int
-    user: Optional[SimpleUser] = None
+    user: Optional['SimpleUser'] = None
 
     class Config:
         orm_mode = True
 
 class Order(BaseModel):
     order_id: Optional[int] = None
-    user: User
-    product: Product
-    amount: int
-    delivered: bool = False
-    local: str
-    obs: Optional[str] = "no comments"
+    quantity: int
+    delivery_adress: Optional[str]
+    delivery_type: str
+    note: Optional[str] = "no comments"
+    
+    user_id: Optional[int]
+    product_id: Optional[int]
+
+    user: Optional['SimpleUser']
+    product: Optional['SimpleProduct']
