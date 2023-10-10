@@ -74,3 +74,11 @@ class Order(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class LoginData(BaseModel):
+    password: str
+    phone_number: str
+
+    class Config:
+        orm_mode = True
