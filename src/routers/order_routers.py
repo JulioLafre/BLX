@@ -18,12 +18,12 @@ def get_user_order(id: int, db: Session = Depends(get_db)):
     order = OrderRepository(db).display_order(id)
     return order
 
-@router.get("/orders/{user_id}", response_model=List[Order])
+@router.get("/orders/{user_id}/request", response_model=List[Order])
 def get_user_list_order(user_id: int, db: Session = Depends(get_db)):
     orders_list = OrderRepository(db).get_orders_by_user_id(user_id)
     return orders_list
 
-@router.get("/sales/{user_id}/vendas", response_model=List[Order])
+@router.get("/orders/{user_id}/sales", response_model=List[Order])
 def get_user_list_sales(user_id: int, db: Session = Depends(get_db)):
     sales_list = OrderRepository(db).get_sales_by_user_id(user_id)
     return sales_list

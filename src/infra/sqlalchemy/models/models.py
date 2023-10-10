@@ -13,6 +13,7 @@ class Product(Base):
     available = Column(Boolean, server_default="true")
     user_id = Column(Integer,ForeignKey("users.user_id", name="fk_user_product"))
     user = Relationship("User", back_populates="products")
+    orders = Relationship("Order", back_populates="products")
 
 
 class User(Base):
@@ -40,6 +41,6 @@ class Order(Base):
     product_id = Column(Integer,ForeignKey(
         "products.product_id", name="fk_product_order"))
     user = Relationship("User", back_populates="orders")
-    products = Relationship("Product")
+    products = Relationship("Product", back_populates="orders")
     
 
