@@ -45,8 +45,8 @@ class ProductRepository():
 
     def get_product_by_id(self, id: int):
         query = select(models.Product).where(models.Product.product_id == id)
-        product = self.session.execute(query).first()
-        return product[0]
+        product = self.session.execute(query).scalars().first()
+        return product
 
 
     def delete_product(self, id: int):

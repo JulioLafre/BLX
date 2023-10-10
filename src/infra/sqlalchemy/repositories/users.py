@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from src.schemas import schemas
+from sqlalchemy import select
 from src.infra.sqlalchemy.models import models
 
 class UserRepository():
@@ -17,13 +18,11 @@ class UserRepository():
         self.session.commit()
         self.session.refresh(db_user)
         return db_user
-    
-    def list(self):
-        users = self.session.query(models.User).all()
-        return users
 
-    def get_user(self):
-        pass
+    def get_user_by_phone_number(self, phone_number : str):
+        query = select(models.User).where(models.User.phone_number == phone_number)
+        user = self.session.execute(query).scalars().first()
+        return user
 
     def remove_user(self):
         pass
