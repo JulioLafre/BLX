@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from src.schemas.schemas import User, SimpleUser, LoginData
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositories.users import UserRepository
-from src.infra.providers import hash_provider   
+from src.infra.providers import hash_provider, token_provider
 
 router = APIRouter()
 
@@ -35,4 +35,9 @@ def signin(login_data: LoginData, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
                             detail="User or Phone Number don't exist")
     
-    return user
+    token = token_provider.create_access_token({"sub": phone_number})
+    return {"access_token": token}
+
+@router.get("/me")
+def me(token: str, db: Session = Depends(get_db)):
+    pass
